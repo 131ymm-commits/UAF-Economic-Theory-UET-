@@ -1,0 +1,84 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\begin{document}
+
+\title{UET: Математическая формализация}
+\author{UAF Economic Theory}
+\date{Версия 1.0}
+\maketitle
+
+\section{Пространство состояний агента}
+Агент $i$ в момент $t$ описывается вектором:
+\[
+\mathbf{T}_i(t) = \begin{pmatrix}
+t_{self,i}(t) \\ t_{market,i}(t) \\ t_{obligation,i}(t) \\ t_{captured,i}(t)
+\end{pmatrix},\qquad
+\sum_{k} t_{k,i}(t) = 24 \text{ ч/сутки}.
+\]
+
+Глобальная консервация времени:
+\[
+T_{past}(t) + T_{now}(t) + T_{future}(t) = \text{const}.
+\]
+
+\section{Матрёшечная иерархия}
+Уровни $l=0,\dots,L$. Коэффициент интеграции $\alpha_{i,l}\in[0,1]$.
+Эффективность уровня $l$:
+\[
+E_l = \left( \prod_{i\in l} \alpha_{i,l} \right)^{1/N_l} \cdot \frac{\Delta T_{integrated,l}}{\Delta T_{cost,l}} .
+\]
+
+\section{Ключевые уравнения}
+Богатство и власть:
+\[
+Wealth_i = \sum_j \alpha_{ij} \cdot t_{future,j}^{controlled},\qquad
+P_i = \sum_j \alpha_{ij} (\Delta t_{captured,j} - \Delta t_{self,j}).
+\]
+
+Динамика распределения времени:
+\[
+\frac{d\mathbf{T}_i}{dt} = \mathbf{F}(\mathbf{T}_i,\boldsymbol{\alpha},\mathbf{E}) + \boldsymbol{\xi}_i(t).
+\]
+
+Захват времени:
+\[
+\frac{d t_{captured,i}}{dt} = \beta_i (1-\alpha_{self,i}) A_i - \gamma_i t_{self,i}.
+\]
+
+Интеграция в матрёшку:
+\[
+\frac{d\alpha_{i,l}}{dt} = \kappa (E_l - c_i) \alpha_{i,l}(1-\alpha_{i,l}) - \delta_{decay}(1-\alpha_{i,l}).
+\]
+
+Создание/разрушение будущего времени:
+\[
+\frac{d T_{future}}{dt} = r\,T_{past} - \pi M - \lambda T_{future}.
+\]
+
+\section{Макроэкономические агрегаты}
+Net Free Time Index:
+\[
+\text{NFTI} = \frac{1}{N}\sum_i (t_{self,i} - \theta\, t_{captured,i}).
+\]
+
+Реальный экономический рост:
+\[
+g_{real} = \frac{d}{dt}\log\left( \sum_l E_l \cdot T_{past,l} \right).
+\]
+
+Инфляция:
+\[
+\pi = \max\left(0,\; \frac{\Delta M - \Delta T_{real}}{\Delta M}\right).
+\]
+
+\section{Устойчивость}
+Стационарное состояние: $\frac{d\mathbf{T}}{dt}=0,\ \frac{d\boldsymbol{\alpha}}{dt}=0$.
+Условие устойчивости матрёшки:
+\[
+E_l > 1 + \frac{\text{cost of integration}}{\text{benefit of scale}}.
+\]
+
+\section*{Заключение}
+Модель может быть реализована как агент-ориентированная симуляция или система ОДУ. Параметры требуют эмпирической калибровки.
+
+\end{document}
